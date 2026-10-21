@@ -36,7 +36,7 @@ Validation checks dimensions, codec, frame rate, frame count, duration and audio
 
 - **`src/config.ts`**: exact message text, colors, font size, dimensions, appearance times, drawing times, pauses, scroll duration, audio volume and the optional small signature. All timing values are seconds, converted to frames consistently. Set `showSignature: false` to remove the signature.
 - **`src/components/MessageBubble.tsx`**: reusable text bubbles, SVG tails, spring arrival transitions and staggered typing dots. `MessageArrival` also animates the image cards.
-- **`src/components/Handwriting.tsx`**: manually authored cubic SVG pen paths. `progress` controls drawing; `variant="partial"` draws the shared seed, while `variant="full" replaySeed` redraws the same seed and completes **Botox**. Stroke widths, geometry and relative letter timing are editable here. No text glyphs are used for the handwriting.
+- **`src/components/Handwriting.tsx`**: manually authored cubic SVG pen paths. `progress` controls drawing; `variant="partial"` draws the incoming open heart-like curve from the replacement reference, while `variant="full" replaySeed` draws the original **Botox** lettering. The incoming curve is independent of the outgoing drawing. Stroke widths, geometry and relative letter timing are editable here. No text glyphs are used for the handwriting.
 - **`src/BotoxTextingReel.tsx`**: conversation layout, smooth upward movement, receipt, sound sequencing and image cards. Text, colors and major timing controls are imported from the config.
 - **`remotion.config.ts`**: codec, quality, browser and worker settings. `src/Root.tsx` registers the composition.
 
@@ -48,12 +48,12 @@ Inter is bundled through `@fontsource/inter` as the closest available open font 
 | --- | --- |
 | 0.00–0.30 | Pure black opening |
 | 0.30 | Incoming **Babe** |
-| 0.83–1.52 | Incoming white image, shared B seed drawn |
+| 0.83–1.52 | Incoming white image, open heart-like curve drawn |
 | 1.90 | **Complete it? 🥺** |
 | 2.90–3.53 | Outgoing typing dots |
 | 3.60 | Blue **Of course** |
 | 4.20 | Blank outgoing image; conversation scrolls up |
-| 4.43–7.33 | Seed redraws, B completes, then **o**, **t**, **o**, **x** |
+| 4.43–7.33 | Original B draws and completes, then **o**, **t**, **o**, **x** |
 | 7.60 | **Read 19:24**, then a quiet reveal hold |
 | 8.33–9.17 | Incoming typing dots |
 | 9.23 | **wtf**, notification and muted comic pluck |

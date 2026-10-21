@@ -1,7 +1,7 @@
 import React, {CSSProperties} from 'react';
 
 export type HandwritingProps = {
-  /** The incoming drawing is the same stem and upper bowl used by the full B. */
+  /** Incoming reference curve or the completed outgoing Botox lettering. */
   variant: 'partial' | 'full';
   /** Drawing progress, from 0 to 1. All geometry stays editable below. */
   progress: number;
@@ -27,10 +27,20 @@ const penTiming = (value: number) => {
   return t * t * (3 - 2 * t);
 };
 
-// The seed is deliberately shared by both images: the punchline really does
-// complete the original mark. Its upper bowl hooks back short of the tilted
-// stem. Keeping the bowls open makes this feel like a loose finger drawing,
-// rather than a closed P turning into a typeset B.
+// Incoming-only trace of the replacement reference: a rounded upper hook that
+// flows into a long, gently curved diagonal. Its own viewBox preserves the
+// placement and proportions of the supplied white card.
+const incomingMark: PenStroke[] = [
+  {
+    id: 'incoming-open-heart-curve',
+    d: 'M 291 110 C 273 80, 238 65, 207 77 C 169 88, 146 120, 145 155 C 142 193, 161 223, 188 251 C 219 283, 250 312, 280 347 C 300 370, 316 390, 323 404',
+    start: 0,
+    end: 1,
+    width: 14,
+  },
+];
+
+// The outgoing lettering retains its original geometry and animation.
 const seed: PenStroke[] = [
   {
     id: 'B-stem-and-upper-bowl',
@@ -123,20 +133,20 @@ export const Handwriting: React.FC<HandwritingProps> = ({
   replaySeed = false,
 }) => {
   const p = clamp(progress);
-  const seedProgress = variant === 'partial' ? p : replaySeed ? p / 0.25 : 1;
+  const seedProgress = replaySeed ? p / 0.25 : 1;
   const completionProgress = replaySeed ? (p - 0.25) / 0.75 : p;
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 560 280"
+      viewBox={variant === 'partial' ? '0 0 755 479' : '0 0 560 280'}
       role="img"
-      aria-label={variant === 'partial' ? 'An unfinished handwritten B' : 'Botox'}
+      aria-label={variant === 'partial' ? 'An unfinished heart-like handwritten curve' : 'Botox'}
       style={{width: '100%', height: '100%', display: 'block', ...style}}
     >
-      <g transform="translate(14 -1)">
-        {seed.map((stroke) => (
-          <Stroke key={stroke.id} stroke={stroke} progress={seedProgress} />
+      <g transform={variant === 'partial' ? undefined : 'translate(14 -1)'}>
+        {(variant === 'partial' ? incomingMark : seed).map((stroke) => (
+          <Stroke key={stroke.id} stroke={stroke} progress={variant === 'partial' ? p : seedProgress} />
         ))}
         {variant === 'full'
           ? completion.map((stroke) => (
