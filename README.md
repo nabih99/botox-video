@@ -2,6 +2,8 @@
 
 An 18-second, 1080 × 1920 Instagram Reel at 30 fps, rebuilt as separate editable React/SVG elements in Remotion. The final export is **`botox_texting_reel.mp4`** (H.264, yuv420p, stereo AAC). No screenshot, video clips, or remote assets are used in the render.
 
+The luxury version uses an ivory background, soft-beige incoming bubbles, champagne-gold outgoing bubbles, elegant black text and warm-white drawing cards. An understated serif **NN Aesthetics** signature finishes the minimalist composition. Dialogue, drawings, animation timing and sound remain unchanged.
+
 **[Download the finished MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/botox_texting_reel.mp4)** · **[Download the complete project ZIP](https://github.com/nabih99/botox-video/archive/refs/heads/main.zip)**
 
 ## Preview and export
@@ -34,33 +36,33 @@ Validation checks dimensions, codec, frame rate, frame count, duration and audio
 
 ## Creative controls
 
-- **`src/config.ts`**: exact message text, colors, font size, dimensions, appearance times, drawing times, pauses, scroll duration, audio volume and the optional small signature. All timing values are seconds, converted to frames consistently. Set `showSignature: false` to remove the signature.
+- **`src/config.ts`**: exact message text, the ivory/beige/champagne/black palette, font size, dimensions, appearance times, drawing times, pauses, scroll duration, audio volume and the optional small signature. Edit the palette here to adjust the luxury styling. All timing values are seconds, converted to frames consistently. Set `showSignature: false` to remove the signature.
 - **`src/components/MessageBubble.tsx`**: reusable text bubbles, SVG tails, spring arrival transitions and staggered typing dots. `MessageArrival` also animates the image cards.
 - **`src/components/Handwriting.tsx`**: manually authored cubic SVG pen paths. `progress` controls drawing; `variant="partial"` draws the incoming open heart-like curve from the replacement reference, while `variant="full" replaySeed` draws the original **Botox** lettering. The incoming curve is independent of the outgoing drawing. Stroke widths, geometry and relative letter timing are editable here. No text glyphs are used for the handwriting.
 - **`src/BotoxTextingReel.tsx`**: conversation layout, smooth upward movement, receipt, sound sequencing and image cards. Text, colors and major timing controls are imported from the config.
 - **`remotion.config.ts`**: codec, quality, browser and worker settings. `src/Root.tsx` registers the composition.
 
-Inter is bundled through `@fontsource/inter` as the closest available open font to the requested iOS style. The pleading-face emoji is a bundled Noto Color Emoji subset, so renders do not depend on host emoji fonts. This emulates the reference's iMessage appearance without requiring Apple font files.
+Inter 400 is bundled through `@fontsource/inter` for clean, readable conversation text. Cormorant Garamond 500, bundled through `@fontsource/cormorant-garamond`, gives the small signature its refined serif finish. The palette uses ivory `#F7F3EA`, beige `#E9E1D5`, champagne `#DCC9A6`, warm white `#FFFDFA` and near-black `#1B1916`. Subtle champagne card edges and a fine line above the signature complete the styling. The pleading-face emoji is a bundled Noto Color Emoji subset, so renders do not depend on host emoji fonts.
 
 ## Timeline
 
 | Time | Action |
 | --- | --- |
-| 0.00–0.30 | Pure black opening |
+| 0.00–0.30 | Ivory opening |
 | 0.30 | Incoming **Babe** |
-| 0.83–1.52 | Incoming white image, open heart-like curve drawn |
+| 0.83–1.52 | Incoming warm-white image, open heart-like curve drawn |
 | 1.90 | **Complete it? 🥺** |
 | 2.90–3.53 | Outgoing typing dots |
-| 3.60 | Blue **Of course** |
+| 3.60 | Champagne-gold **Of course** |
 | 4.20 | Blank outgoing image; conversation scrolls up |
 | 4.43–7.33 | Original B draws and completes, then **o**, **t**, **o**, **x** |
 | 7.60 | **Read 19:24**, then a quiet reveal hold |
 | 8.33–9.17 | Incoming typing dots |
 | 9.23 | Incoming **BOTOX? How much??** |
-| 11.10 | Blue outgoing **For only 900!!!** |
+| 11.10 | Champagne-gold outgoing **For only 900!!!** |
 | 13.00 | Incoming **OMG 900 ONLYY!!!** |
 | 14.10 | Incoming **WHERE???** |
-| 15.70 | Blue outgoing **At NN Aesthetics!** |
+| 15.70 | Champagne-gold outgoing **At NN Aesthetics!** |
 | 16.50–18.00 | Small **NN Aesthetics** signature; final conversation holds |
 
 The conversation scrolls upward naturally as the added messages arrive, keeping the latest exchange readable. The original drawing sequence remains unchanged.

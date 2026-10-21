@@ -39,15 +39,16 @@ export const MessageBubble: React.FC<{text: string; direction: Direction; at: nu
 export const TypingIndicator: React.FC<{direction: Direction; start: number; end: number; top: number}> = ({direction, start, end, top}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const color = direction === 'incoming' ? REEL.colors.incoming : REEL.colors.outgoing;
   if (frame < secondsToFrame(start) || frame >= secondsToFrame(end)) return null;
   const fadeOut = interpolate(frame, [secondsToFrame(end) - 3, secondsToFrame(end)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.quad)});
   return <MessageArrival at={start} direction={direction} style={{position: 'absolute', top, [direction === 'incoming' ? 'left' : 'right']: 0}}>
-    <div style={{position: 'relative', width: 140, height: 78, borderRadius: 44, background: REEL.colors.incoming, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 11, opacity: fadeOut}}>
-      <BubbleTail direction={direction} color={REEL.colors.incoming} size={22}/>
+    <div style={{position: 'relative', width: 140, height: 78, borderRadius: 44, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 11, opacity: fadeOut}}>
+      <BubbleTail direction={direction} color={color} size={22}/>
       {[0, 1, 2].map((i) => {
         const phase = (frame / fps - start) / REEL.motion.typingDotCycleSeconds * Math.PI * 2 - i * 0.8;
         const pulse = Math.pow(Math.max(0, Math.sin(phase)), 2);
-        return <div key={i} style={{width: 16, height: 16, borderRadius: '50%', backgroundColor: '#b5b5ba', opacity: 0.45 + pulse * 0.55, transform: `translateY(${-pulse * 5}px)`}}/>;
+        return <div key={i} style={{width: 16, height: 16, borderRadius: '50%', backgroundColor: REEL.colors.typingDots, opacity: 0.45 + pulse * 0.55, transform: `translateY(${-pulse * 5}px)`}}/>;
       })}
     </div>
   </MessageArrival>;

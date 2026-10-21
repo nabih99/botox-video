@@ -4,6 +4,7 @@ import {FOLLOW_UP_MESSAGES, FollowUpMessage, REEL, secondsToFrame} from './confi
 import {Handwriting} from './components/Handwriting';
 import {BubbleTail, Direction, MessageArrival, MessageBubble, TypingIndicator} from './components/MessageBubble';
 import '@fontsource/inter/400.css';
+import '@fontsource/cormorant-garamond/500.css';
 import './styles.css';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
@@ -28,11 +29,12 @@ const followUps = FOLLOW_UP_MESSAGES.reduce<Array<FollowUpMessage & {top: number
 }, []);
 
 const DrawingCard: React.FC<{direction: Direction; at: number; top: number; progress: number; full: boolean}> = ({direction, at, top, progress, full}) => <MessageArrival at={at} direction={direction} style={{position: 'absolute', top, [direction === 'incoming' ? 'left' : 'right']: 0}}>
-  <div style={{position: 'relative', width: L.cardWidth, height: L.cardHeight, borderRadius: L.cardRadius, backgroundColor: REEL.colors.paper}}>
+  <div style={{position: 'relative', width: L.cardWidth, height: L.cardHeight, borderRadius: L.cardRadius, backgroundColor: REEL.colors.paper, boxShadow: '0 6px 22px rgba(68, 50, 22, 0.045)'}}>
     {full && <BubbleTail direction={direction} color={REEL.colors.paper} size={29}/>}
     <div style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: L.cardRadius}}>
       <Handwriting variant={full ? 'full' : 'partial'} progress={progress} replaySeed={full} style={{width: '100%', height: '100%'}}/>
     </div>
+    <div style={{position: 'absolute', inset: 0, border: `1px solid ${REEL.colors.cardEdge}`, borderRadius: L.cardRadius, pointerEvents: 'none'}}/>
   </div>
 </MessageArrival>;
 
@@ -43,7 +45,7 @@ const Sound: React.FC<{at: number; file: string; volume: number; duration: numbe
 export const BotoxTextingReel: React.FC = () => {
   const [fontsReady] = useState(() => delayRender('Loading bundled conversation fonts'));
   useEffect(() => {
-    Promise.all([document.fonts.load('43px Inter'), document.fonts.load('43px "Reel Emoji"', '🥺')])
+    Promise.all([document.fonts.load('43px Inter'), document.fonts.load('43px "Reel Emoji"', '🥺'), document.fonts.load('500 32px "Cormorant Garamond"')])
       .then(() => document.fonts.ready)
       .then(() => continueRender(fontsReady))
       .catch(cancelRender);
@@ -64,7 +66,7 @@ export const BotoxTextingReel: React.FC = () => {
   const receiptOpacity = interpolate(t, [T.read, T.read + 0.18], [0, 1], clamp);
   const signatureOpacity = interpolate(t, [T.signature, T.signature + 0.5], [0, 1], clamp);
 
-  return <AbsoluteFill style={{backgroundColor: REEL.colors.background, fontFamily: 'Inter, "Reel Emoji", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif'}}>
+  return <AbsoluteFill style={{backgroundColor: REEL.colors.background, fontFamily: REEL.typography.conversation}}>
     <style>{`@font-face {font-family: 'Reel Emoji'; src: url('${staticFile('fonts/pleading-emoji.ttf')}') format('truetype'); font-weight: 400; font-display: block; unicode-range: U+1F97A;}`}</style>
     <div style={{position: 'absolute', left: L.gutter, right: L.gutter, top: L.initialTop - scroll1 - scroll2 - followUpScroll}}>
       <MessageBubble text={REEL.text.opener} direction="incoming" at={T.babe} top={positions.babe} width={157}/>
@@ -79,7 +81,10 @@ export const BotoxTextingReel: React.FC = () => {
         <MessageBubble text={message.text} direction={message.direction} at={message.at} top={message.top} width={message.width} tail={message.tail}/>
       </React.Fragment>)}
     </div>
-    {REEL.showSignature && <div style={{position: 'absolute', bottom: 123, left: 0, right: 0, textAlign: 'center', color: REEL.colors.signature, fontSize: 24, letterSpacing: 0.35, opacity: signatureOpacity}}>{REEL.text.signature}</div>}
+    {REEL.showSignature && <div style={{position: 'absolute', bottom: 123, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, color: REEL.colors.signature, opacity: signatureOpacity}}>
+      <div style={{width: 68, height: 1, backgroundColor: REEL.colors.goldAccent}}/>
+      <div style={{fontFamily: REEL.typography.signature, fontSize: REEL.typography.signatureSize, fontWeight: 500, letterSpacing: REEL.typography.signatureTracking, lineHeight: 1.1}}>{REEL.text.signature}</div>
+    </div>}
     <Sound at={T.babe} file="incoming" volume={REEL.sound.incomingVolume} duration={0.6}/>
     <Sound at={T.incomingCard} file="incoming" volume={0.36} duration={0.6}/>
     <Sound at={T.question} file="incoming" volume={0.44} duration={0.6}/>

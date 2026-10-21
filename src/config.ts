@@ -17,13 +17,22 @@ export const REEL = {
     signature: 'NN Aesthetics',
   },
   colors: {
-    background: '#000000',
-    incoming: '#252527',
-    outgoing: '#0a84ff',
-    text: '#f7f7f7',
-    paper: '#fafafa',
-    receipt: '#8e8e93',
-    signature: '#66666a',
+    background: '#F7F3EA',
+    incoming: '#E9E1D5',
+    outgoing: '#DCC9A6',
+    text: '#1B1916',
+    paper: '#FFFDFA',
+    receipt: '#776B58',
+    signature: '#25211B',
+    typingDots: '#887451',
+    goldAccent: '#B59A65',
+    cardEdge: '#DED3C0',
+  },
+  typography: {
+    conversation: 'Inter, "Reel Emoji", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif',
+    signature: '"Cormorant Garamond", Georgia, serif',
+    signatureSize: 32,
+    signatureTracking: 1.8,
   },
   layout: {
     gutter: 100,
@@ -85,7 +94,7 @@ export type FollowUpMessage = {
   typing?: {start: number; end: number};
 };
 
-/** The gray sender reacts; the blue sender answers the price and location. */
+/** Soft-beige reactions; champagne-gold replies give the price and location. */
 export const FOLLOW_UP_MESSAGES: readonly FollowUpMessage[] = [
   {id: 'price-question', text: REEL.text.priceQuestion, direction: 'incoming', at: REEL.timing.priceQuestion, width: 520, typing: {start: REEL.timing.incomingTypingStart, end: REEL.timing.incomingTypingEnd}},
   {id: 'price-reply', text: REEL.text.priceReply, direction: 'outgoing', at: REEL.timing.priceReply, width: 385, typing: {start: 10.4, end: 11.03}},
