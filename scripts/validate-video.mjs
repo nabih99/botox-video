@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
+
+const file = process.argv[2] ?? 'botox_texting_reel.mp4';
+assert(existsSync(file), `Render first: ${file} is missing`);
+const probe = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-count_frames', '-show_streams', '-show_format', '-of', 'json', file], {encoding: 'utf8'}));
+const video = probe.streams.find((s) => s.codec_type === 'video');
+const audio = probe.streams.find((s) => s.codec_type === 'audio');
+assert(video, 'Missing video stream');
+assert(audio, 'Missing audio stream');
+assert.equal(video.codec_name, 'h264');
+assert.equal(video.width, 1080);
+assert.equal(video.height, 1920);
+assert.equal(video.pix_fmt, 'yuv420p');
+assert.equal(video.avg_frame_rate, '30/1');
+assert.equal(Number(video.nb_read_frames), 360);
+assert(Math.abs(Number(video.duration) - 12) < 0.05, 'Expected a 12-second video');
+assert.equal(audio.codec_name, 'aac');
+assert.equal(audio.channels, 2);
+assert.equal(Number(audio.sample_rate), 48000);
+execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-f', 'null', '-'], {stdio: ['ignore', 'pipe', 'pipe']});
+mkdirSync('out', {recursive: true});
+writeFileSync('out/validation.json', JSON.stringify({file, validatedAt: new Date().toISOString(), result: 'passed', checks: ['H.264', '1080×1920', 'yuv420p', '30fps', '360 decoded frames', '12 seconds', 'stereo AAC 48kHz', 'complete audio/video decode'], video, audio}, null, 2));
+console.log(`PASS: ${file}: 1080×1920 H.264, 30fps, 12s / 360 frames, stereo AAC 48kHz; complete decode succeeded.`);

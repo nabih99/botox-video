@@ -1,0 +1,68 @@
+# NN Aesthetics — Botox texting reel
+
+A 12-second, 1080 × 1920 Instagram Reel at 30 fps, rebuilt as separate editable React/SVG elements in Remotion. The final export is **`botox_texting_reel.mp4`** (H.264, yuv420p, stereo AAC). No screenshot, video clips, or remote assets are used in the render.
+
+**[Download the finished MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/botox_texting_reel.mp4)** · **[Download the complete project ZIP](https://github.com/nabih99/botox-video/archive/refs/heads/main.zip)**
+
+## Preview and export
+
+Prerequisites: Node.js 22 or newer and npm. The cloud environment has Chromium, Python 3, FFmpeg and FFprobe installed. Python is only needed to regenerate sound effects; FFmpeg/FFprobe are only needed by the validation command. Remotion can obtain its supported headless browser on machines without Chromium. To use another installed browser, set `CHROME_PATH` to its executable.
+
+```bash
+cd /workspace/botox-video
+npm ci
+npm run typecheck
+npm run preview
+```
+
+Open Remotion Studio using your development environment's supported port forwarding, select `BotoxTextingReel`, then play or scrub the timeline. Studio uses port 3000. The onboarding interface itself does not provide web previews.
+
+Export the actual video from the same directory:
+
+```bash
+npm run render
+```
+
+The output is `botox_texting_reel.mp4` in the project root. The renderer uses three workers, CRF 16, 192 kbps audio, PNG source frames and an H.264/yuv420p encode suitable for Instagram. Its duration is exactly 360 frames / 12 seconds. To render a single final frame or validate the finished file:
+
+```bash
+npm run still
+npm run validate
+```
+
+Validation checks dimensions, codec, frame rate, frame count, duration and audio, then decodes the entire file. It writes `out/validation.json`. The final still is `out/final-frame.png`.
+
+## Creative controls
+
+- **`src/config.ts`**: exact message text, colors, font size, dimensions, appearance times, drawing times, pauses, scroll duration, audio volume and the optional small signature. All timing values are seconds, converted to frames consistently. Set `showSignature: false` to remove the signature.
+- **`src/components/MessageBubble.tsx`**: reusable text bubbles, SVG tails, spring arrival transitions and staggered typing dots. `MessageArrival` also animates the image cards.
+- **`src/components/Handwriting.tsx`**: manually authored cubic SVG pen paths. `progress` controls drawing; `variant="partial"` draws the shared seed, while `variant="full" replaySeed` redraws the same seed and completes **Botox**. Stroke widths, geometry and relative letter timing are editable here. No text glyphs are used for the handwriting.
+- **`src/BotoxTextingReel.tsx`**: conversation layout, smooth upward movement, receipt, sound sequencing and image cards. Text, colors and major timing controls are imported from the config.
+- **`remotion.config.ts`**: codec, quality, browser and worker settings. `src/Root.tsx` registers the composition.
+
+Inter is bundled through `@fontsource/inter` as the closest available open font to the requested iOS style. The pleading-face emoji is a bundled Noto Color Emoji subset, so renders do not depend on host emoji fonts. This emulates the reference's iMessage appearance without requiring Apple font files.
+
+## Timeline
+
+| Time | Action |
+| --- | --- |
+| 0.00–0.30 | Pure black opening |
+| 0.30 | Incoming **Babe** |
+| 0.83–1.52 | Incoming white image, shared B seed drawn |
+| 1.90 | **Complete it? 🥺** |
+| 2.90–3.53 | Outgoing typing dots |
+| 3.60 | Blue **Of course** |
+| 4.20 | Blank outgoing image; conversation scrolls up |
+| 4.43–7.33 | Seed redraws, B completes, then **o**, **t**, **o**, **x** |
+| 7.60 | **Read 19:24**, then a quiet reveal hold |
+| 8.33–9.17 | Incoming typing dots |
+| 9.23 | **wtf**, notification and muted comic pluck |
+| 10.25–12.00 | Small **NN Aesthetics** signature; final conversation holds |
+
+## Audio and assets
+
+The four audio effects in `public/audio/` are original synthesized WAVs. Their source is `scripts/generate-audio.py` (Python standard library only). Regenerate deterministically with `npm run audio`. They are deliberately quiet and can be mixed through `REEL.sound` in `src/config.ts`.
+
+The emoji font and its license are in `public/fonts/`. Audio and fonts are included project assets; no download is needed when rendering after dependency installation. Dependency versions are pinned and `package-lock.json` supports reproducible installation. `.npmrc` puts the npm cache in an ignored local directory so the cloud environment does not need write access to the home directory.
+
+The setup and preview commands use the existing checkout. Cloud tasks are already isolated; do not create another worktree for ordinary work here.

@@ -1,0 +1,29 @@
+{
+  "name": "nn-aesthetics-botox-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An editable, frame-precise iMessage texting meme for NN Aesthetics.",
+  "scripts": {
+    "start": "remotion studio src/index.ts --port=3000",
+    "preview": "npm run start",
+    "typecheck": "tsc --noEmit",
+    "audio": "python3 scripts/generate-audio.py",
+    "render": "remotion render src/index.ts BotoxTextingReel botox_texting_reel.mp4",
+    "still": "remotion still src/index.ts BotoxTextingReel out/final-frame.png --frame=330",
+    "validate": "node scripts/validate-video.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "5.3.0",
+    "@remotion/cli": "4.0.537",
+    "@remotion/renderer": "4.0.537",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "remotion": "4.0.537"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}
