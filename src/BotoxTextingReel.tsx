@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {AbsoluteFill, Audio, cancelRender, continueRender, delayRender, Easing, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {REEL, secondsToFrame} from './config';
+import {FOLLOW_UP_MESSAGES, FollowUpMessage, REEL, secondsToFrame} from './config';
 import {Handwriting} from './components/Handwriting';
 import {BubbleTail, Direction, MessageArrival, MessageBubble, TypingIndicator} from './components/MessageBubble';
 import '@fontsource/inter/400.css';
@@ -15,8 +15,17 @@ const positions = {
   question: L.bubbleHeight + L.gap + L.cardHeight + L.gap,
   response: 2 * L.bubbleHeight + L.cardHeight + 2 * L.gap + L.turnGap,
   outgoingCard: 3 * L.bubbleHeight + L.cardHeight + 3 * L.gap + L.turnGap,
-  punchline: 3 * L.bubbleHeight + 2 * L.cardHeight + 3 * L.gap + 2 * L.turnGap + L.receiptHeight,
+  followUp: 3 * L.bubbleHeight + 2 * L.cardHeight + 3 * L.gap + 2 * L.turnGap + L.receiptHeight,
 };
+
+const followUps = FOLLOW_UP_MESSAGES.reduce<Array<FollowUpMessage & {top: number}>>((messages, message) => {
+  const previous = messages.at(-1);
+  const top = previous
+    ? previous.top + L.bubbleHeight + (previous.direction === message.direction ? L.gap : L.turnGap)
+    : positions.followUp;
+  messages.push({...message, top});
+  return messages;
+}, []);
 
 const DrawingCard: React.FC<{direction: Direction; at: number; top: number; progress: number; full: boolean}> = ({direction, at, top, progress, full}) => <MessageArrival at={at} direction={direction} style={{position: 'absolute', top, [direction === 'incoming' ? 'left' : 'right']: 0}}>
   <div style={{position: 'relative', width: L.cardWidth, height: L.cardHeight, borderRadius: L.cardRadius, backgroundColor: REEL.colors.paper}}>
@@ -46,12 +55,18 @@ export const BotoxTextingReel: React.FC = () => {
   // A single conversation canvas scrolls as messages arrive; its children stay editable.
   const scroll1 = interpolate(t, [T.response - 0.12, T.response + 0.48], [0, 85], {...clamp, easing: curve});
   const scroll2 = interpolate(t, [T.outgoingCard - 0.08, T.outgoingCard + REEL.motion.scrollSeconds], [0, L.initialTop - L.finalTop - 85], {...clamp, easing: curve});
+  // Keep the newest message in the same comfortable reading area as the
+  // exchange grows. Older messages naturally scroll beyond the top edge.
+  const followUpScroll = followUps.slice(1).reduce((scroll, message, index) => {
+    const step = message.top - followUps[index].top;
+    return scroll + interpolate(t, [message.at - 0.1, message.at + REEL.motion.scrollSeconds], [0, step], {...clamp, easing: curve});
+  }, 0);
   const receiptOpacity = interpolate(t, [T.read, T.read + 0.18], [0, 1], clamp);
   const signatureOpacity = interpolate(t, [T.signature, T.signature + 0.5], [0, 1], clamp);
 
   return <AbsoluteFill style={{backgroundColor: REEL.colors.background, fontFamily: 'Inter, "Reel Emoji", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif'}}>
     <style>{`@font-face {font-family: 'Reel Emoji'; src: url('${staticFile('fonts/pleading-emoji.ttf')}') format('truetype'); font-weight: 400; font-display: block; unicode-range: U+1F97A;}`}</style>
-    <div style={{position: 'absolute', left: L.gutter, right: L.gutter, top: L.initialTop - scroll1 - scroll2}}>
+    <div style={{position: 'absolute', left: L.gutter, right: L.gutter, top: L.initialTop - scroll1 - scroll2 - followUpScroll}}>
       <MessageBubble text={REEL.text.opener} direction="incoming" at={T.babe} top={positions.babe} width={157}/>
       <DrawingCard direction="incoming" at={T.incomingCard} top={positions.incomingCard} progress={progress(T.partialDrawStart, T.partialDrawEnd)} full={false}/>
       <MessageBubble text={REEL.text.question} direction="incoming" at={T.question} top={positions.question} width={350}/>
@@ -59,8 +74,10 @@ export const BotoxTextingReel: React.FC = () => {
       <MessageBubble text={REEL.text.response} direction="outgoing" at={T.response} top={positions.response} width={246} tail={false}/>
       <DrawingCard direction="outgoing" at={T.outgoingCard} top={positions.outgoingCard} progress={progress(T.fullDrawStart, T.fullDrawEnd)} full/>
       <div style={{position: 'absolute', right: 14, top: positions.outgoingCard + L.cardHeight + 15, color: REEL.colors.receipt, fontSize: 27, letterSpacing: '-0.5px', opacity: receiptOpacity}}>{REEL.text.receipt}</div>
-      <TypingIndicator direction="incoming" start={T.incomingTypingStart} end={T.incomingTypingEnd} top={positions.punchline}/>
-      <MessageBubble text={REEL.text.punchline} direction="incoming" at={T.punchline} top={positions.punchline} width={133}/>
+      {followUps.map((message) => <React.Fragment key={message.id}>
+        {message.typing && <TypingIndicator direction={message.direction} start={message.typing.start} end={message.typing.end} top={message.top}/>}
+        <MessageBubble text={message.text} direction={message.direction} at={message.at} top={message.top} width={message.width} tail={message.tail}/>
+      </React.Fragment>)}
     </div>
     {REEL.showSignature && <div style={{position: 'absolute', bottom: 123, left: 0, right: 0, textAlign: 'center', color: REEL.colors.signature, fontSize: 24, letterSpacing: 0.35, opacity: signatureOpacity}}>{REEL.text.signature}</div>}
     <Sound at={T.babe} file="incoming" volume={REEL.sound.incomingVolume} duration={0.6}/>
@@ -69,7 +86,7 @@ export const BotoxTextingReel: React.FC = () => {
     <Sound at={T.response} file="outgoing" volume={REEL.sound.outgoingVolume} duration={0.45}/>
     <Sound at={T.outgoingCard} file="outgoing" volume={0.37} duration={0.45}/>
     <Sound at={T.fullDrawStart} file="handwriting" volume={REEL.sound.handwritingVolume} duration={T.fullDrawEnd - T.fullDrawStart}/>
-    <Sound at={T.punchline} file="incoming" volume={0.41} duration={0.6}/>
-    <Sound at={T.punchline + 0.06} file="punchline" volume={REEL.sound.punchlineVolume} duration={0.4}/>
+    {followUps.map((message) => <Sound key={`sound-${message.id}`} at={message.at} file={message.direction === 'incoming' ? 'incoming' : 'outgoing'} volume={message.direction === 'incoming' ? 0.41 : REEL.sound.outgoingVolume} duration={message.direction === 'incoming' ? 0.6 : 0.45}/>)}
+    <Sound at={T.surprise + 0.06} file="punchline" volume={REEL.sound.punchlineVolume} duration={0.4}/>
   </AbsoluteFill>;
 };

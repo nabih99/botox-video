@@ -3,13 +3,17 @@ export const REEL = {
   width: 1080,
   height: 1920,
   fps: 30,
-  duration: 12,
+  duration: 18,
   text: {
     opener: 'Babe',
     question: 'Complete it? 🥺',
     response: 'Of course',
     receipt: 'Read 19:24',
-    punchline: 'wtf',
+    priceQuestion: 'BOTOX? How much??',
+    priceReply: 'For only 900!!!',
+    surprise: 'OMG 900 ONLYY!!!',
+    locationQuestion: 'WHERE???',
+    locationReply: 'At NN Aesthetics!',
     signature: 'NN Aesthetics',
   },
   colors: {
@@ -50,8 +54,12 @@ export const REEL = {
     read: 7.6,
     incomingTypingStart: 8.33,
     incomingTypingEnd: 9.17,
-    punchline: 9.23,
-    signature: 10.25,
+    priceQuestion: 9.23,
+    priceReply: 11.1,
+    surprise: 13,
+    locationQuestion: 14.1,
+    locationReply: 15.7,
+    signature: 16.5,
   },
   motion: {
     appearSeconds: 0.34,
@@ -66,6 +74,25 @@ export const REEL = {
   },
   showSignature: true,
 } as const;
+
+export type FollowUpMessage = {
+  id: string;
+  text: string;
+  direction: 'incoming' | 'outgoing';
+  at: number;
+  width: number;
+  tail?: boolean;
+  typing?: {start: number; end: number};
+};
+
+/** The gray sender reacts; the blue sender answers the price and location. */
+export const FOLLOW_UP_MESSAGES: readonly FollowUpMessage[] = [
+  {id: 'price-question', text: REEL.text.priceQuestion, direction: 'incoming', at: REEL.timing.priceQuestion, width: 520, typing: {start: REEL.timing.incomingTypingStart, end: REEL.timing.incomingTypingEnd}},
+  {id: 'price-reply', text: REEL.text.priceReply, direction: 'outgoing', at: REEL.timing.priceReply, width: 385, typing: {start: 10.4, end: 11.03}},
+  {id: 'surprise', text: REEL.text.surprise, direction: 'incoming', at: REEL.timing.surprise, width: 460, tail: false, typing: {start: 12.3, end: 12.93}},
+  {id: 'location-question', text: REEL.text.locationQuestion, direction: 'incoming', at: REEL.timing.locationQuestion, width: 285},
+  {id: 'location-reply', text: REEL.text.locationReply, direction: 'outgoing', at: REEL.timing.locationReply, width: 415, typing: {start: 15, end: 15.63}},
+];
 
 export const secondsToFrame = (seconds: number) => Math.round(seconds * REEL.fps);
 export const DURATION_IN_FRAMES = secondsToFrame(REEL.duration);

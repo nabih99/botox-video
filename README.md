@@ -1,6 +1,6 @@
 # NN Aesthetics — Botox texting reel
 
-A 12-second, 1080 × 1920 Instagram Reel at 30 fps, rebuilt as separate editable React/SVG elements in Remotion. The final export is **`botox_texting_reel.mp4`** (H.264, yuv420p, stereo AAC). No screenshot, video clips, or remote assets are used in the render.
+An 18-second, 1080 × 1920 Instagram Reel at 30 fps, rebuilt as separate editable React/SVG elements in Remotion. The final export is **`botox_texting_reel.mp4`** (H.264, yuv420p, stereo AAC). No screenshot, video clips, or remote assets are used in the render.
 
 **[Download the finished MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/botox_texting_reel.mp4)** · **[Download the complete project ZIP](https://github.com/nabih99/botox-video/archive/refs/heads/main.zip)**
 
@@ -23,14 +23,14 @@ Export the actual video from the same directory:
 npm run render
 ```
 
-The output is `botox_texting_reel.mp4` in the project root. The renderer uses three workers, CRF 16, 192 kbps audio, PNG source frames and an H.264/yuv420p encode suitable for Instagram. Its duration is exactly 360 frames / 12 seconds. To render a single final frame or validate the finished file:
+The output is `botox_texting_reel.mp4` in the project root. The renderer uses three workers, CRF 16, 192 kbps audio, PNG source frames and an H.264/yuv420p encode suitable for Instagram. Its duration is exactly 540 frames / 18 seconds. To render a single final frame or validate the finished file:
 
 ```bash
 npm run still
 npm run validate
 ```
 
-Validation checks dimensions, codec, frame rate, frame count, duration and audio, then decodes the entire file. It writes `out/validation.json`. The final still is `out/final-frame.png`.
+Validation checks dimensions, codec, frame rate, frame count, duration and audio, then decodes the entire file. It writes `out/validation.json`. The final still is `out/final-frame.png`, rendered at frame 510 (17 seconds).
 
 ## Creative controls
 
@@ -56,8 +56,14 @@ Inter is bundled through `@fontsource/inter` as the closest available open font 
 | 4.43–7.33 | Original B draws and completes, then **o**, **t**, **o**, **x** |
 | 7.60 | **Read 19:24**, then a quiet reveal hold |
 | 8.33–9.17 | Incoming typing dots |
-| 9.23 | **wtf**, notification and muted comic pluck |
-| 10.25–12.00 | Small **NN Aesthetics** signature; final conversation holds |
+| 9.23 | Incoming **BOTOX? How much??** |
+| 11.10 | Blue outgoing **For only 900!!!** |
+| 13.00 | Incoming **OMG 900 ONLYY!!!** |
+| 14.10 | Incoming **WHERE???** |
+| 15.70 | Blue outgoing **At NN Aesthetics!** |
+| 16.50–18.00 | Small **NN Aesthetics** signature; final conversation holds |
+
+The conversation scrolls upward naturally as the added messages arrive, keeping the latest exchange readable. The original drawing sequence remains unchanged.
 
 ## Audio and assets
 

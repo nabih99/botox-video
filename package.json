@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "audio": "python3 scripts/generate-audio.py",
     "render": "remotion render src/index.ts BotoxTextingReel botox_texting_reel.mp4",
-    "still": "remotion still src/index.ts BotoxTextingReel out/final-frame.png --frame=330",
+    "still": "remotion still src/index.ts BotoxTextingReel out/final-frame.png --frame=510",
     "validate": "node scripts/validate-video.mjs"
   },
   "dependencies": {
