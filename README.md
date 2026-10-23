@@ -1,12 +1,18 @@
-# NN Aesthetics — Botox Sale Video
+# Botox Sale Video · Fast Dysport Challenge
 
-New: an original luxury **pause challenge** with three finished 12-second, 1080 × 1920 Reels, exact six-frame winning moments, Hebrew RTL typography, and original audio.
+A six-second Instagram pause challenge that starts moving immediately. The latest version uses a transparent, realistic 3D-style Dysport product render based on the supplied vial reference, a dark petrol background, Hebrew RTL text, and an original faster soundtrack. There is no clinic logo, clinic name, intro, or ending scene.
 
-**[Download the main syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-syringe.mp4)** · **[Slower MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-slow.mp4)** · **[Vial MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-vial.mp4)**
+**[Download the fast Dysport MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-dysport.mp4)** · **[Fast syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-syringe.mp4)** · **[Gentler syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-slower.mp4)**
 
-**[Instagram cover PNG](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-cover.png)** · **[Complete editable project + videos ZIP](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-video-project.zip)** · **[Editing and rendering instructions](PAUSE_SALE_VIDEO.md)**
+**[Instagram cover PNG](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-cover.png)** · **[Complete editable project + videos ZIP](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-project.zip)** · **[Editing and rendering instructions](PAUSE_SALE_VIDEO.md)**
 
-The new entry point is `src/pause-sale/index.tsx`. Run `npm run sale:preview`, `npm run sale:render`, or `npm run sale:validate`. Edit price, Hebrew copy, colors, winning frames, motion speed, difficulty, and primary product in `src/pause-sale/config.ts`.
+All current videos are 1080 × 1920 at 30 fps, 180 frames, H.264 MP4 with stereo AAC. The hidden offer appears only in three exact six-frame alignment windows. The vial's original white photo background has been removed; its transparent image and matching outline share one silhouette.
+
+Run `npm run sale:preview`, `npm run sale:render`, or `npm run sale:validate` from this checkout. Edit price, Hebrew text, colors, winning frames, motion speed, difficulty, and primary product in `src/pause-sale/config.ts`.
+
+## Previous 12-second versions
+
+The earlier [syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-syringe.mp4), [slower syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-slow.mp4), and [generic vial](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-vial.mp4) exports remain available as archived versions. They retain their original design and duration.
 
 ## Original Botox texting reel
 

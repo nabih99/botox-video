@@ -40,17 +40,20 @@ const smoothstep = (value: number) => {
 };
 
 /**
- * Shared analytical motion for the product and QC. The outline never moves.
- * Each six-frame winning plateau returns an EXACT identity transform. Between
- * catches the object turns around offscreen, alternating direction. No other
- * challenge frame has x=0. Slow mode changes the travel curve, not offer gates.
+ * Three fast rightward passes, with a six-frame EXACT identity plateau at each
+ * catch. The object wraps from +distance to -distance while fully offscreen.
+ * It is already visible and moving on frame zero. The periodic continuation
+ * satisfies state(frame + duration) === state(frame), so the last-to-first
+ * transition advances by one normal frame rather than duplicating an endpoint.
  */
 export const getChallengeState = (
   frame: number,
   variant: ChallengeVariant = 'syringe',
 ): ChallengeState => {
   const {challengeStart, challengeEnd} = PAUSE_SALE.timeline;
+  const duration = challengeEnd - challengeStart;
   const active = frame >= challengeStart && frame < challengeEnd;
+  const localFrame = ((frame - challengeStart) % duration + duration) % duration + challengeStart;
   const windowIndex = active
     ? WINNING_WINDOWS.findIndex(({start, end}) => frame >= start && frame <= end)
     : -1;
@@ -58,46 +61,48 @@ export const getChallengeState = (
     return {x: 0, y: 0, rotation: 0, scale: 1, winning: true, active, windowIndex};
   }
 
-  const speed = Math.max(
-    0.15,
-    PAUSE_SALE.motion.speed * (variant === 'slow' ? PAUSE_SALE.motion.slowSpeedMultiplier : 1),
-  );
-  // Larger exponents flatten travel near the target: the slower variant is
-  // measurably closer to center on the same adjacent nonwinning frames.
-  const exponent = 0.66 / speed;
-  const distanceCurve = (t: number) => Math.pow(smoothstep(t), exponent);
-  let normalized = -1;
+  // Find the neighbouring winning holds on a cyclic timeline. Working with
+  // their actual boundaries keeps editable timestamps/difficulty meaningful.
+  const nextIndex = WINNING_WINDOWS.findIndex(({start}) => start > localFrame);
+  const next = nextIndex < 0
+    ? {...WINNING_WINDOWS[0], start: WINNING_WINDOWS[0].start + duration}
+    : WINNING_WINDOWS[nextIndex];
+  const previousIndex = nextIndex < 0 ? WINNING_WINDOWS.length - 1 : nextIndex - 1;
+  const previousEnd = previousIndex < 0
+    ? WINNING_WINDOWS[WINNING_WINDOWS.length - 1].end - duration
+    : WINNING_WINDOWS[previousIndex].end;
+  const gap = next.start - previousEnd;
+  const elapsed = localFrame - previousEnd;
+  const exitFrames = Math.min(12, gap / 3);
+  const entryFrames = gap - exitFrames;
+  const distance = PAUSE_SALE.motion.distance;
+  const requestedSpeed = Math.max(0.15, PAUSE_SALE.motion.speed *
+    (variant === 'slow' ? PAUSE_SALE.motion.slowSpeedMultiplier : 1));
 
-  if (frame < WINNING_WINDOWS[0].start) {
-    normalized = -distanceCurve(
-      (WINNING_WINDOWS[0].start - frame) /
-        (WINNING_WINDOWS[0].start - challengeStart),
-    );
-  } else if (frame > WINNING_WINDOWS[WINNING_WINDOWS.length - 1].end) {
-    const last = WINNING_WINDOWS[WINNING_WINDOWS.length - 1];
-    const sign = WINNING_WINDOWS.length % 2 === 1 ? 1 : -1;
-    normalized = sign * distanceCurve((frame - last.end) / (challengeEnd - 1 - last.end));
-  } else {
-    for (let i = 0; i < WINNING_WINDOWS.length - 1; i++) {
-      const previous = WINNING_WINDOWS[i];
-      const next = WINNING_WINDOWS[i + 1];
-      if (frame > previous.end && frame < next.start) {
-        const turn = (previous.end + next.start) / 2;
-        const sign = i % 2 === 0 ? 1 : -1;
-        const t = frame <= turn
-          ? (frame - previous.end) / (turn - previous.end)
-          : (next.start - frame) / (next.start - turn);
-        normalized = sign * distanceCurve(t);
-        break;
-      }
-    }
-  }
-
-  const edge = Math.abs(normalized);
+  // The exponential kick makes the adjacent losing frame ~43px away instead
+  // of the former ~14px, with slower travel only far away from the target.
+  const rawDistance = (d: number) => 120 * (1 - Math.exp(-d / 3)) + 8.5 * d;
+  const scale = Math.min(requestedSpeed, distance * 0.72 / rawDistance(entryFrames));
+  const nearCenter = (d: number) => {
+    if (d >= 1) return rawDistance(d) * scale;
+    const end = rawDistance(1);
+    const velocity = 40 * Math.exp(-1 / 3) + 8.5;
+    // Cubic Hermite softens only the final fractional frame; exact window
+    // boundaries have zero velocity without making catches visually easy.
+    return ((-2*d*d*d+3*d*d)*end + (d*d*d-d*d)*velocity) * scale;
+  };
+  const travel = (d: number, length: number, rampStart: number) => {
+    const bonus = Math.max(0, distance - nearCenter(length));
+    return Math.min(distance, nearCenter(d) + bonus * smoothstep((d-rampStart)/(length-rampStart)));
+  };
+  const x = elapsed <= exitFrames
+    ? travel(elapsed, exitFrames, Math.min(1, exitFrames * 0.2))
+    : -travel(next.start-localFrame, entryFrames, Math.min(26, entryFrames * 0.7));
+  const edge = Math.abs(x / distance);
   return {
-    x: normalized * PAUSE_SALE.motion.distance,
+    x,
     y: edge * edge * PAUSE_SALE.motion.verticalDrift,
-    rotation: normalized * PAUSE_SALE.motion.maximumRotation,
+    rotation: (x / distance) * PAUSE_SALE.motion.maximumRotation,
     scale: 1 - edge * 0.012,
     winning: false,
     active,

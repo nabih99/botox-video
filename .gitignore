@@ -5,3 +5,4 @@ out/
 *.log
 deliverables/qc-stills/
 deliverables/quality-control-model.json
+deliverables/quality-control-fast-model.json

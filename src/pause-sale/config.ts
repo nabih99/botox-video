@@ -1,18 +1,18 @@
-/** Editable settings for all three NN Aesthetics pause-challenge exports. */
+/** Editable settings for the immediate six-second pause challenge. */
 export const PAUSE_SALE = {
   width: 1080,
   height: 1920,
   fps: 30,
-  durationInFrames: 360,
+  durationInFrames: 180,
   price: 900,
   currency: '₪',
   // Primary BotoxSale composition. Alternates remain separately selectable.
-  mainVariant: 'syringe' as ChallengeVariant,
+  mainVariant: 'vial' as ChallengeVariant,
   colors: {
-    ivory: '#F7F3ED',
-    beige: '#DED0BE',
+    ivory: '#101C20',
+    beige: '#253A40',
     gold: '#C6A77B',
-    black: '#171717',
+    black: '#F5F0E8',
   },
   text: {
     headline: 'רק 1% מצליחים לעצור בזמן הנכון',
@@ -22,21 +22,21 @@ export const PAUSE_SALE = {
     offerPrefix: 'בוטוקס ב־',
     offerSuffix: ' בלבד',
     screenshot: 'צלמו מסך ושלחו לנו בפרטי',
-    brand: 'NN AESTHETICS',
-    retry: 'נסו שוב אם פספסתם',
+    brand: '',
+    retry: '',
   },
   timeline: {
-    challengeStart: 60,
-    challengeEnd: 270, // Exclusive: the final challenge frame is 269.
-    winningStarts: [98, 163, 228],
+    challengeStart: 0,
+    challengeEnd: 180, // Exclusive: the immediate challenge runs for the whole video.
+    winningStarts: [26, 86, 146],
     winningFrames: 6,
     // 1 = six frames. Raise to 1.5 for four-frame catches; lower to ease it.
     difficulty: 1,
   },
   motion: {
-    distance: 820,
+    distance: 850,
     speed: 1,
-    slowSpeedMultiplier: 0.76,
+    slowSpeedMultiplier: 0.82,
     maximumRotation: 3.5,
     verticalDrift: 12,
   },
