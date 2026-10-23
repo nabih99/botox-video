@@ -3,3 +3,5 @@ node_modules/
 build/
 out/
 *.log
+deliverables/qc-stills/
+deliverables/quality-control-model.json

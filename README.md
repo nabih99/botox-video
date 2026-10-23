@@ -1,4 +1,14 @@
-# NN Aesthetics — Botox texting reel
+# NN Aesthetics — Botox Sale Video
+
+New: an original luxury **pause challenge** with three finished 12-second, 1080 × 1920 Reels, exact six-frame winning moments, Hebrew RTL typography, and original audio.
+
+**[Download the main syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-syringe.mp4)** · **[Slower MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-slow.mp4)** · **[Vial MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-vial.mp4)**
+
+**[Instagram cover PNG](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-cover.png)** · **[Complete editable project + videos ZIP](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-video-project.zip)** · **[Editing and rendering instructions](PAUSE_SALE_VIDEO.md)**
+
+The new entry point is `src/pause-sale/index.tsx`. Run `npm run sale:preview`, `npm run sale:render`, or `npm run sale:validate`. Edit price, Hebrew copy, colors, winning frames, motion speed, difficulty, and primary product in `src/pause-sale/config.ts`.
+
+## Original Botox texting reel
 
 An 18-second, 1080 × 1920 Instagram Reel at 30 fps, rebuilt as separate editable React/SVG elements in Remotion. The final export is **`botox_texting_reel.mp4`** (H.264, yuv420p, stereo AAC). No screenshot, video clips, or remote assets are used in the render.
 
