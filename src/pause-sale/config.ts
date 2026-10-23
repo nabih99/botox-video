@@ -1,4 +1,4 @@
-/** Editable settings for the immediate six-second pause challenge. */
+/** Editable settings for the continuously moving six-second pause challenge. */
 export const PAUSE_SALE = {
   width: 1080,
   height: 1920,
@@ -28,17 +28,20 @@ export const PAUSE_SALE = {
   timeline: {
     challengeStart: 0,
     challengeEnd: 180, // Exclusive: the immediate challenge runs for the whole video.
-    winningStarts: [26, 86, 146],
-    winningFrames: 6,
+    winningStarts: [8, 68, 128],
+    winningFrames: 6, // Offer duration only; the product never holds still.
     // 1 = six frames. Raise to 1.5 for four-frame catches; lower to ease it.
     difficulty: 1,
   },
   motion: {
     distance: 850,
+    // At least 720 composition pixels keeps product wrapping out of view.
+    minimumDistance: 720,
+    // Changes constant travel velocity while preserving the periodic catch times.
     speed: 1,
     slowSpeedMultiplier: 0.82,
-    maximumRotation: 3.5,
-    verticalDrift: 12,
+    maximumRotation: 0,
+    verticalDrift: 0,
   },
 } as const;
 

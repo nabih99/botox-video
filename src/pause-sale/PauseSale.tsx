@@ -15,7 +15,7 @@ const Background = () => <AbsoluteFill style={{background:C.colors.ivory,overflo
   <div style={{position:'absolute',left:84,right:84,top:202,height:1,background:`linear-gradient(90deg,transparent,${C.colors.gold}70,transparent)`}}/>
 </AbsoluteFill>;
 
-/** The light card exists for exactly the six winning frames in each pass. */
+/** The offer flashes during each pass while the product keeps moving. */
 export const Offer:React.FC = () => <div data-offer="winning-only" dir="rtl" style={{position:'absolute',top:1468,left:100,width:880,height:192,background:'#F5F0E8',color:'#171717',borderTop:`2px solid ${C.colors.gold}`,borderBottom:`2px solid ${C.colors.gold}`,textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:18,boxShadow:'0 14px 80px #00000033'}}>
   <div data-offer-text style={{fontSize:58,fontWeight:700,lineHeight:1.3,whiteSpace:'nowrap'}}>{getOfferText()}</div>
   <div style={{fontSize:31,lineHeight:1.4}}>{C.text.screenshot}</div>
@@ -55,5 +55,5 @@ export const PauseScene:React.FC<{frame:number;variant:ChallengeVariant;cover?:b
   </AbsoluteFill>;
 };
 
-export const PauseSale:React.FC<{variant:ChallengeVariant}> = ({variant}) => <><PauseScene frame={useCurrentFrame()} variant={variant}/><Audio src={staticFile('audio/pause-challenge-fast.wav')} volume={.78}/></>;
+export const PauseSale:React.FC<{variant:ChallengeVariant}> = ({variant}) => <><PauseScene frame={useCurrentFrame()} variant={variant}/><Audio src={staticFile('audio/pause-challenge-smooth.wav')} volume={.78}/></>;
 export const PauseCover:React.FC = () => <PauseScene frame={0} variant="vial" cover/>;

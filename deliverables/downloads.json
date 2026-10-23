@@ -38,5 +38,25 @@
   "botox-sale-fast-project.zip": {
     "bytes": 7036732,
     "sha256": "03eed6d44b000c290eb27f16467c796013212f4364c27a9fd8b7fc1937631529"
+  },
+  "botox-sale-smooth-slower.mp4": {
+    "bytes": 765565,
+    "sha256": "4a0162d9d6c9a057a5881d700f84dd3da3e9b958937d35a3121fcea515e911b8"
+  },
+  "botox-sale-smooth-dysport.mp4": {
+    "bytes": 1278424,
+    "sha256": "bd01b2cf368c882e6b44f7faad35add9a7116e59bf05814a4d7de3c0bb9f33c9"
+  },
+  "botox-sale-smooth-syringe.mp4": {
+    "bytes": 784655,
+    "sha256": "d725b2bce12b98ead20c8d20c3abf38c98d7e7e23d0f5a16e8bf3b130c92cbef"
+  },
+  "botox-sale-smooth-cover.png": {
+    "bytes": 2151241,
+    "sha256": "b99747e2fef2900ce92552f6f48c6a7723e0cb96b5b9489dd6d57296cca711bb"
+  },
+  "botox-sale-smooth-project.zip": {
+    "bytes": 6978688,
+    "sha256": "608e2eb60d92ec2a11e68bfc43841c31a66d9e4f3796d21fb0b02152dffb6361"
   }
 }

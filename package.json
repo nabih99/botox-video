@@ -13,9 +13,9 @@
     "validate": "node scripts/validate-video.mjs",
     "sale:preview": "remotion studio src/pause-sale/index.tsx --port=3000",
     "sale:render": "node scripts/render-pause-sale.mjs",
-    "sale:cover": "remotion still src/pause-sale/index.tsx BotoxSaleCover deliverables/botox-sale-fast-cover.png",
+    "sale:cover": "remotion still src/pause-sale/index.tsx BotoxSaleCover deliverables/botox-sale-smooth-cover.png",
     "sale:validate": "node scripts/check-pause-sale.cjs",
-    "sale:audio": "python3 scripts/generate-fast-audio.py"
+    "sale:audio": "python3 scripts/generate-smooth-audio.py"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "5.3.0",

@@ -1,18 +1,18 @@
-# Botox Sale Video · Fast Dysport Challenge
+# Botox Sale Video · Smooth Dysport Challenge
 
-A six-second Instagram pause challenge that starts moving immediately. The latest version uses a transparent, realistic 3D-style Dysport product render based on the supplied vial reference, a dark petrol background, Hebrew RTL text, and an original faster soundtrack. There is no clinic logo, clinic name, intro, or ending scene.
+A six-second Instagram pause challenge with continuous movement from the first frame. The vial moves through each catch without stopping, and the end-to-start transition advances by one normal frame so replay stays smooth. The transparent, realistic 3D-style Dysport render, dark petrol background, Hebrew RTL text, and original soundtrack are retained. There is no clinic branding, intro, or ending scene.
 
-**[Download the fast Dysport MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-dysport.mp4)** · **[Fast syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-syringe.mp4)** · **[Gentler syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-slower.mp4)**
+**[Download the smooth Dysport MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-smooth-dysport.mp4)** · **[Smooth syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-smooth-syringe.mp4)** · **[Slower syringe MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-smooth-slower.mp4)**
 
-**[Instagram cover PNG](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-cover.png)** · **[Complete editable project + videos ZIP](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-project.zip)** · **[Editing and rendering instructions](PAUSE_SALE_VIDEO.md)**
+**[Instagram cover PNG](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-smooth-cover.png)** · **[Complete editable project + videos ZIP](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-smooth-project.zip)** · **[Editing and rendering instructions](PAUSE_SALE_VIDEO.md)**
 
-All current videos are 1080 × 1920 at 30 fps, 180 frames, H.264 MP4 with stereo AAC. The hidden offer appears only in three exact six-frame alignment windows. The vial's original white photo background has been removed; its transparent image and matching outline share one silhouette.
+All current videos are 1080 × 1920 at 30 fps, 180 frames, H.264 MP4 with stereo AAC. The offer flashes for six frames around each pass; exact alignment occurs once per pass, on frames 10, 70, and 130. The product keeps moving during the flash. Its original white photo background is removed, and the transparent product and gold outline share a silhouette.
 
-Run `npm run sale:preview`, `npm run sale:render`, or `npm run sale:validate` from this checkout. Edit price, Hebrew text, colors, winning frames, motion speed, difficulty, and primary product in `src/pause-sale/config.ts`.
+Run `npm run sale:preview`, `npm run sale:render`, or `npm run sale:validate` from this checkout. Edit price, Hebrew text, colors, offer windows, motion settings, and primary product in `src/pause-sale/config.ts`.
 
-## Previous 12-second versions
+## Earlier versions
 
-The earlier [syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-syringe.mp4), [slower syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-slow.mp4), and [generic vial](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-vial.mp4) exports remain available as archived versions. They retain their original design and duration.
+The previous [fast Dysport MP4](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/botox-sale-fast-dysport.mp4) and the earlier 12-second [syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-syringe.mp4), [slower syringe](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-slow.mp4), and [generic vial](https://github.com/nabih99/botox-video/raw/refs/heads/main/deliverables/nn-aesthetics-vial.mp4) remain available as archived exports.
 
 ## Original Botox texting reel
 
